@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-sand: var(--sand);
+  --color-sand-deep: var(--sand-deep);
+  --color-brass: var(--brass);
+  --color-brass-soft: var(--brass-soft);
+  --color-coral: var(--coral);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+:root {
+  /* Horizon palette — deep ink teal, warm ivory sand, weathered brass accent */
+  --ink: #10221f;
+  --ink-soft: #1c332e;
+  --sand: #f4ede1;
+  --sand-deep: #e7dbc6;
+  --brass: #b8863f;
+  --brass-soft: #d9b876;
+  --coral: #c4573f;
+  --line: rgba(16, 34, 31, 0.12);
+
+  --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --font-body: -apple-system, "Segoe UI", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--sand);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Horizon line — signature divider motif */
+.horizon-rule {
+  position: relative;
+  height: 1px;
+  background: var(--line);
+}
+
+.horizon-rule::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--brass);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fade-up {
+    animation: fadeUp 0.6s ease-out both;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
