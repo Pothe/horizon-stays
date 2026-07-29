@@ -69,6 +69,7 @@ create table bookings (
   currency text not null default 'USD',
   status text not null default 'confirmed' check (status in ('pending','confirmed','cancelled','completed')),
   payment_status text not null default 'unpaid' check (payment_status in ('unpaid','paid')),
+  payment_method text check (payment_method in ('cash','bank_qr')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint valid_dates check (check_out > check_in)

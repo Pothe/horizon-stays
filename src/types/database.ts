@@ -42,6 +42,7 @@ export type Booking = {
   currency: string;
   status: "pending" | "confirmed" | "cancelled" | "completed";
   payment_status: "unpaid" | "paid";
+  payment_method: "cash" | "bank_qr" | null;
   created_at: string;
   updated_at: string;
 };

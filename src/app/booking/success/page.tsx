@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
+const methodLabel: Record<string, string> = {
+  cash: "cash",
+  bank_qr: "bank QR scan",
+};
+
 export default async function BookingSuccessPage({
   searchParams,
 }: {
@@ -19,6 +24,12 @@ export default async function BookingSuccessPage({
 
   const propertyName = (booking as unknown as { properties?: { name: string } } | null)
     ?.properties?.name;
+  const paymentMethod = (booking as unknown as { payment_method?: string } | null)
+    ?.payment_method;
+
+  const paymentPhrase = paymentMethod
+    ? `by ${methodLabel[paymentMethod] ?? paymentMethod}`
+    : "in person";
 
   return (
     <div className="mx-auto max-w-lg px-6 py-24 text-center">
@@ -26,8 +37,8 @@ export default async function BookingSuccessPage({
       <h1 className="font-display text-3xl text-ink mb-4">You&apos;re all set.</h1>
       <p className="text-ink/60 mb-8">
         {propertyName
-          ? `Your stay at ${propertyName} is confirmed. No payment is required now — you'll pay in person when you check in.`
-          : "Your reservation is confirmed. No payment is required now — you'll pay in person when you check in."}
+          ? `Your stay at ${propertyName} is confirmed. No payment is required now — you'll pay ${paymentPhrase} when you check in.`
+          : `Your reservation is confirmed. No payment is required now — you'll pay ${paymentPhrase} when you check in.`}
       </p>
       <Link
         href="/bookings"

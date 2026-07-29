@@ -14,6 +14,11 @@ const paymentStyles: Record<string, string> = {
   paid: "bg-green-100 text-green-700",
 };
 
+const methodLabel: Record<string, string> = {
+  cash: "Cash",
+  bank_qr: "Bank QR",
+};
+
 export default async function BookingsPage() {
   const supabase = await createClient();
   const {
@@ -70,6 +75,7 @@ export default async function BookingsPage() {
                 <p className="text-sm text-ink/60 mt-1">
                   {roomType?.name} · {booking.check_in} → {booking.check_out} ·{" "}
                   {booking.guests} guest{booking.guests === 1 ? "" : "s"} · {total}
+                  {booking.payment_method && ` · ${methodLabel[booking.payment_method]}`}
                 </p>
               </div>
               <div className="flex flex-col items-end gap-2 shrink-0">

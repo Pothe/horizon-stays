@@ -4,6 +4,8 @@ import { useState } from "react";
 import type { RoomType } from "@/types/database";
 import { createClient } from "@/lib/supabase/client";
 
+type PaymentMethod = "cash" | "bank_qr";
+
 export default function BookingForm({
   roomType,
   propertyId,
@@ -14,6 +16,7 @@ export default function BookingForm({
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -58,6 +61,7 @@ export default function BookingForm({
           checkIn,
           checkOut,
           guests,
+          paymentMethod,
         }),
       });
 
@@ -117,6 +121,38 @@ export default function BookingForm({
         >
           {loading ? "Reserving…" : "Reserve Now"}
         </button>
+      </div>
+
+      <div className="sm:col-span-4">
+        <span className="text-ink/60 text-sm block mb-2">
+          How will you pay at check-in?
+        </span>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setPaymentMethod("cash")}
+            className={`flex-1 border rounded-sm px-4 py-3 text-sm text-left transition-colors ${
+              paymentMethod === "cash"
+                ? "border-brass bg-brass-soft/20 text-ink"
+                : "border-ink/20 text-ink/60 hover:border-ink/40"
+            }`}
+          >
+            <span className="font-medium block">Cash</span>
+            <span className="text-xs text-ink/50">Pay in cash at the front desk</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setPaymentMethod("bank_qr")}
+            className={`flex-1 border rounded-sm px-4 py-3 text-sm text-left transition-colors ${
+              paymentMethod === "bank_qr"
+                ? "border-brass bg-brass-soft/20 text-ink"
+                : "border-ink/20 text-ink/60 hover:border-ink/40"
+            }`}
+          >
+            <span className="font-medium block">Bank QR</span>
+            <span className="text-xs text-ink/50">Scan the hotel's bank QR code</span>
+          </button>
+        </div>
       </div>
 
       {nights > 0 && (

@@ -3,17 +3,25 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { propertyId, roomTypeId, checkIn, checkOut, guests } = body as {
+  const { propertyId, roomTypeId, checkIn, checkOut, guests, paymentMethod } = body as {
     propertyId: string;
     roomTypeId: string;
     checkIn: string;
     checkOut: string;
     guests: number;
+    paymentMethod?: string;
   };
 
   if (!propertyId || !roomTypeId || !checkIn || !checkOut || !guests) {
     return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
   }
+
+  if (paymentMethod && !["cash", "bank_qr"].includes(paymentMethod)) {
+    return NextResponse.json({ error: "Invalid payment method." }, { status: 400 });
+  }
+
+  const resolvedPaymentMethod: "cash" | "bank_qr" =
+    paymentMethod === "bank_qr" ? "bank_qr" : "cash";
 
   const supabase = await createClient();
   const {
@@ -75,6 +83,7 @@ export async function POST(request: Request) {
       currency: roomType.currency,
       status: "confirmed",
       payment_status: "unpaid",
+      payment_method: resolvedPaymentMethod,
     })
     .select()
     .single();
