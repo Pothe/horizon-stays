@@ -150,7 +150,7 @@ export default function BookingForm({
             }`}
           >
             <span className="font-medium block">Bank QR</span>
-            <span className="text-xs text-ink/50">Scan the hotel's bank QR code</span>
+            <span className="text-xs text-ink/50">Scan the hotel&apos;s bank QR code</span>
           </button>
         </div>
       </div>
